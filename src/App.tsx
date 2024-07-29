@@ -28,7 +28,6 @@ export const App = () => {
   const [selectedNotes, setSelectedNotes] = useState<Note | null>(null)
   const handelSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-
     const newNote: Note = {
       id: notes.length + 1,
       title: title,
@@ -36,16 +35,34 @@ export const App = () => {
     }
     //updater function picks the newly created object and then spread the other objects
     setNotes([newNote, ...notes])
+ 
+    console.log(newNote);
     console.log("title: ", title);
     console.log("content: ", content);
     setTitle('')
     setContent('')
   }
   const handleUpdate = (note: Note) => {
-setSelectedNotes(note)//to save the clicked note to our selectedNotes
+    setSelectedNotes(note)//to save the clicked note to our selectedNotes
     //now populated the items
     setTitle(note.title)
     setContent(note.content)
+  }
+  const handleUpdateNotes=(e:React.FormEvent)=>{
+    e.preventDefault()
+    if(!selectedNotes)  return //exit if there is no notes which is selected
+    //updater object based on the id,title,content
+    const updatedNotes:Note={
+      id:selectedNotes.id,
+      title:title,
+      content:content
+    }
+    //generate new array after the updatedNotes object is created to return those items and also the exist ones
+    const updatedNotesList= notes.map(note=>(note.id===selectedNotes.id ?updatedNotes:note))
+    setNotes(updatedNotesList)
+    setTitle('')
+    setContent('')
+    setSelectedNotes(null)
   }
 
   return (
@@ -58,7 +75,7 @@ setSelectedNotes(note)//to save the clicked note to our selectedNotes
       </form>
       <div className='note-grid'>
         {notes.map(note => (
-          <div className='note-item' onClick={() => handleUpdate(note)}>
+          <div className='note-item' key={note.id} onClick={() => handleUpdate(note)}>
             <div className='note-header'>
               <button>x</button>
             </div>
