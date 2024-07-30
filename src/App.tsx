@@ -6,22 +6,7 @@ type Note = {
   content: string
 }
 export const App = () => {
-  const [notes, setNotes] = useState<Note[]>([
-    {
-      id: 1,
-      title: 'test blal',
-      content: 'just testing'
-    },
-    {
-      id: 2,
-      title: 'test blal',
-      content: 'just testing'
-    },
-    {
-      id: 3,
-      title: 'test blal',
-      content: 'just testing'
-    }])
+  const [notes, setNotes] = useState<Note[]>([])
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
@@ -36,7 +21,8 @@ export const App = () => {
     //updater function picks the newly created object and then spread the other objects
     setNotes([newNote, ...notes])
 
-    console.log(newNote);
+
+    // console.log(newNote);
     console.log("title: ", title);
     console.log("content: ", content);
     setTitle('')
@@ -80,8 +66,8 @@ export const App = () => {
   return (
     <div className='AppContainer'>
       <form action="" className='note-form' onSubmit={(e) => selectedNote ? handleUpdateNotes(e) : handelAddNote(e)}>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} name="title" id="" placeholder='title' required />
-        <textarea rows={10} value={content} onChange={(e) => setContent(e.target.value)} placeholder='Enter the decription' required></textarea>
+        <input type="text"  value={title} onChange={(e) => setTitle(e.target.value)} name="title" id="title" placeholder='title' required />
+        <textarea rows={10} value={content} onChange={(e) => setContent(e.target.value)} placeholder='Enter the decription' name='desc' required></textarea>
         {
           selectedNote ? (
             <div className='edit-buttons'>
