@@ -25,8 +25,8 @@ export const App = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  const [selectedNotes, setSelectedNotes] = useState<Note | null>(null)
-  const handelSubmit = (e: React.FormEvent) => {
+  const [selectedNote, setSelectedNote] = useState<Note | null>(null)
+  const handelAddNote = (e: React.FormEvent) => {
     e.preventDefault()
     const newNote: Note = {
       id: notes.length + 1,
@@ -35,7 +35,7 @@ export const App = () => {
     }
     //updater function picks the newly created object and then spread the other objects
     setNotes([newNote, ...notes])
- 
+
     console.log(newNote);
     console.log("title: ", title);
     console.log("content: ", content);
@@ -43,44 +43,65 @@ export const App = () => {
     setContent('')
   }
   const handleUpdate = (note: Note) => {
-    setSelectedNotes(note)//to save the clicked note to our selectedNotes
+    setSelectedNote(note)//to save the clicked note to our selectedNotes
     //now populated the items
     setTitle(note.title)
     setContent(note.content)
   }
-  const handleUpdateNotes=(e:React.FormEvent)=>{
+  const handleUpdateNotes = (e: React.FormEvent) => {
     e.preventDefault()
-    if(!selectedNotes)  return //exit if there is no notes which is selected
+    if (!selectedNote) return //exit if there is no notes which is selected
     //updater object based on the id,title,content
-    const updatedNotes:Note={
-      id:selectedNotes.id,
-      title:title,
-      content:content
+    const updatedNotes: Note = {
+      id: selectedNote.id,
+      title: title,
+      content: content
     }
     //generate new array after the updatedNotes object is created to return those items and also the exist ones
-    const updatedNotesList= notes.map(note=>(note.id===selectedNotes.id ?updatedNotes:note))
+    const updatedNotesList = notes.map(note => (note.id === selectedNote.id ? updatedNotes : note))
     setNotes(updatedNotesList)
+    setSelectedNote(null)
     setTitle('')
     setContent('')
-    setSelectedNotes(null)
   }
-
+  const handleCancel = () => {
+    setTitle('')
+    setContent('')
+    setSelectedNote(null)
+  }
+  const handleDelete = (e: React.MouseEvent, noteId: number) => {
+    e.stopPropagation()
+    const updatedNote = notes.filter(note => note.id !== noteId)
+    setNotes(updatedNote)
+    // const  handledelete= {...notes}
+    // delete handleDelete[notes]
+    // return handleDelete
+  }
   return (
     <div className='AppContainer'>
-      <form action="" className='note-form' onSubmit={handelSubmit}>
+      <form action="" className='note-form' onSubmit={(e) => selectedNote ? handleUpdateNotes(e) : handelAddNote(e)}>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} name="title" id="" placeholder='title' required />
         <textarea rows={10} value={content} onChange={(e) => setContent(e.target.value)} placeholder='Enter the decription' required></textarea>
+        {
+          selectedNote ? (
+            <div className='edit-buttons'>
+              <button >update</button>
+              <button onClick={handleCancel}>cancel</button>
+            </div>
 
-        <button type="submit">Add Note</button>
+          ) :
+            <button type="submit">Add Note</button>
+        }
       </form>
       <div className='note-grid'>
         {notes.map(note => (
           <div className='note-item' key={note.id} onClick={() => handleUpdate(note)}>
             <div className='note-header'>
-              <button>x</button>
+              <button onClick={(e) => handleDelete(e, note.id)}>x</button>
             </div>
             <h2>{note.title}</h2>
             <p>{note.content}</p>
+
           </div>))}
       </div>
     </div>
