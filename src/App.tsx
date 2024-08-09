@@ -1,17 +1,20 @@
-import React, { useReducer } from "react"
-import { Notes } from "./components/Notes"
-import { NotesForm } from "./components/NotesForm"
-import { NotesContext } from "./context/NotesContex"
-import { notesReducer } from "./context/NotesReducer"
+import React from "react"
+import { NoteList} from "./components/Notes"
+import { NoteForm } from "./components/NotesForm"
+
+import './App.css'
+
+import { Provider } from "react-redux"
+import { store } from "./store"
 export const App:React.FC = () => {
- const [notes,dispatch]=useReducer(notesReducer,[])
+ 
   return (
-<NotesContext.Provider value={{notes,dispatch}}>
+<Provider store={store}>
   <div className="AppContainer">
-<NotesForm/>
-<Notes/>
+<NoteForm/>
+<NoteList/>
   </div>
-</NotesContext.Provider>
+</Provider>
    
 
   )
