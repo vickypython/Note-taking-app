@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type Note = {
-  id: number;
+  _id: string;
   title: string;
   content: string;
 };
@@ -22,18 +22,22 @@ const notesSlice = createSlice({
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<Note>) => {
-      state.notes = [action.payload, ...state.notes];
+      const {payload}=action
+     state.notes=[payload, ...state.notes]
     },
     updateNote: (state, action: PayloadAction<Note>) => {
+      const {payload}=action
       state.notes = state.notes.map(note =>
-        note.id === action.payload.id ? action.payload : note
+        note._id === payload._id ? payload : note
       );
     },
-    deleteNote: (state, action: PayloadAction<number>) => {
-      state.notes = state.notes.filter(note => note.id !== action.payload);
+    deleteNote: (state, action: PayloadAction<string>) => {
+      const {payload}=action
+      state.notes = state.notes.filter(note => note._id !== payload);
     },
     selectNote: (state, action: PayloadAction<Note | null>) => {
-      state.selectedNote = action.payload;
+      const {payload}=action
+      state.selectedNote = payload;
     },
   },
 });

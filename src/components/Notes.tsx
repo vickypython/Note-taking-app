@@ -7,7 +7,7 @@ export const NoteList: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const notes = useSelector((state: RootState) => state.notes.notes);
 
-  const handleDelete = (e: React.MouseEvent, noteId: number) => {
+  const handleDelete = (e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
     dispatch(deleteNote(noteId));
   };
@@ -15,9 +15,9 @@ export const NoteList: React.FC = () => {
   return (
     <div className='note-grid'>
       {notes.map(note => (
-        <div className='note-item' key={note.id} onClick={() => dispatch(selectNote(note))}>
+        <div className='note-item' key={note._id} onClick={() => dispatch(selectNote(note))}>
           <div className='note-header'>
-            <button onClick={e => handleDelete(e, note.id)}>x</button>
+            <button onClick={e => handleDelete(e, note._id)}>x</button>
           </div>
           <h2>{note.title}</h2>
           <p>{note.content}</p>
