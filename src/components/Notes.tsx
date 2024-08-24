@@ -1,17 +1,19 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { deleteNote, selectNote } from '../features/notes/notesSlice';
+import { deleteNote,  selectNote,} from '../features/notes/notesSlice';
 
 export const NoteList: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const notes = useSelector((state: RootState) => state.notes.notes);
-
+if(!Array.isArray(notes)){
+  return <div>No notes availble</div>
+}
   const handleDelete = (e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
     dispatch(deleteNote(noteId));
   };
-
+ 
   return (
     <div className='note-grid'>
       {notes.map(note => (

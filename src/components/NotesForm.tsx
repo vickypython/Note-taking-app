@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { addNote, updateNote, selectNote } from '../features/notes/notesSlice';
+import { updateNote, selectNote } from '../features/notes/notesSlice';
+import { addNotes } from '../Api';
 
  export const NoteForm: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -18,17 +19,17 @@ import { addNote, updateNote, selectNote } from '../features/notes/notesSlice';
       setContent('');
     }
   }, [selectedNote]);
+ 
 
-  const handleAddNote = (e: React.FormEvent) => {
+  const handleAddNote =async (e: React.FormEvent) => {
     e.preventDefault();
-    const newNote = {
-      id: Date.now(),
-      title,
-      content,
-    };
-    dispatch(addNote(newNote));
-    setTitle('');
-    setContent('');
+    try{
+      await addNotes(dispatch,{title,content})
+      setTitle('');
+      setContent('');
+    } catch (error) {
+      console.error("Error while adding note",error)
+    }
   };
 
   const handleUpdateNote = (e: React.FormEvent) => {

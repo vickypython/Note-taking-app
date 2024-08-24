@@ -1,5 +1,5 @@
 // src/features/notes/notesSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type Note = {
   _id: string;
@@ -7,7 +7,7 @@ export type Note = {
   content: string;
 };
 
- export interface NotesState {
+export interface NotesState {
   notes: Note[];
   selectedNote: Note | null;
 }
@@ -18,29 +18,32 @@ const initialState: NotesState = {
 };
 
 const notesSlice = createSlice({
-  name: 'notes',
+  name: "notes",
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<Note>) => {
-      const {payload}=action
-     state.notes=[payload, ...state.notes]
+      state.notes = [...state.notes, action.payload];
     },
     updateNote: (state, action: PayloadAction<Note>) => {
-      const {payload}=action
-      state.notes = state.notes.map(note =>
+      const { payload } = action;
+      state.notes = state.notes.map((note) =>
         note._id === payload._id ? payload : note
       );
     },
+    getNotes: (state, action: PayloadAction<Note[]>) => {
+      state.notes = action.payload;
+    },
     deleteNote: (state, action: PayloadAction<string>) => {
-      const {payload}=action
-      state.notes = state.notes.filter(note => note._id !== payload);
+      const { payload } = action;
+      state.notes = state.notes.filter((note) => note._id !== payload);
     },
     selectNote: (state, action: PayloadAction<Note | null>) => {
-      const {payload}=action
+      const { payload } = action;
       state.selectedNote = payload;
     },
   },
 });
 
-export const { addNote, updateNote, deleteNote, selectNote } = notesSlice.actions;
+export const { addNote, updateNote, deleteNote, selectNote, getNotes } =
+  notesSlice.actions;
 export default notesSlice.reducer;
