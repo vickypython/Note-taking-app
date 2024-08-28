@@ -34,12 +34,11 @@ const notesSlice = createSlice({
       state.notes = action.payload;
     },
     deleteNote: (state, action: PayloadAction<string>) => {
-      const { payload } = action;
-      state.notes = state.notes.filter((note) => note._id !== payload);
+     
+      state.notes = state.notes.filter((note) => note._id !== action.payload);
     },
     selectNote: (state, action: PayloadAction<Note | null>) => {
-      const { payload } = action;
-      state.selectedNote = payload;
+      state.selectedNote = action.payload;
     },
   },
 });

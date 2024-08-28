@@ -1,7 +1,8 @@
 import React from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { deleteNote,  selectNote,} from '../features/notes/notesSlice';
+import {   selectNote,} from '../features/notes/notesSlice';
+import { deleteNotes } from '../Api';
 
 export const NoteList: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -9,9 +10,13 @@ export const NoteList: React.FC = () => {
 if(!Array.isArray(notes)){
   return <div>No notes availble</div>
 }
-  const handleDelete = (e: React.MouseEvent, noteId: string) => {
+  const handleDelete = async(e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
-    dispatch(deleteNote(noteId));
+    try {
+      await deleteNotes(dispatch,noteId);
+    } catch (error) {
+      console.error("Error while deleting note",error)
+    }
   };
  
   return (

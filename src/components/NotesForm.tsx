@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { updateNote, selectNote } from '../features/notes/notesSlice';
-import { addNotes } from '../Api';
+import { selectNote } from '../features/notes/notesSlice';
+import { addNotes, updateNotes } from '../Api';
 
  export const NoteForm: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -32,17 +32,18 @@ import { addNotes } from '../Api';
     }
   };
 
-  const handleUpdateNote = (e: React.FormEvent) => {
+  const handleUpdateNote = async(e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedNote) return;
-    const updatedNote = {
-      ...selectedNote,
-      title,
-      content,
-    };
-    dispatch(updateNote(updatedNote));
-    dispatch(selectNote(null));
-  };
+    try {
+      const newUpdateNote={...selectedNote,title,content}
+      await updateNotes(dispatch,newUpdateNote)
+      dispatch(selectNote(null));
+    } catch (error) {
+      console.error("Error while updating Note",error)
+    }
+   
+   };
 
   const handleCancel = () => {
     dispatch(selectNote(null));
