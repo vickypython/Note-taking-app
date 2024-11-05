@@ -9,7 +9,7 @@ export const NoteList: React.FC = () => {
   const notes = useSelector((state: RootState) => state.notes.notes);
 if(!Array.isArray(notes)){
   return <div>No notes availble</div>
-}
+} 
   const handleDelete = async(e: React.MouseEvent, noteId: string) => {
     e.stopPropagation();
     try {

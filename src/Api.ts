@@ -7,7 +7,7 @@ import {
 } from "./features/notes/notesSlice";
 import { AppDispatch } from "./store";
 interface ApiResponse {
-  message: string;
+  message: string;//"{Body:'mesage',stkcallback:'{vvaj}'"
   notes: Note[];
 }
 // interface NoteInput {
@@ -21,7 +21,7 @@ const fetchNotes = async (dispatch: AppDispatch) => {
   if (data.notes) {
     dispatch(getNotes(data.notes));
   } else {
-    console.error("Notes found in response");
+    console.error("Notes  not found in the  response");
   }
 };
 const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
@@ -73,10 +73,10 @@ const deleteNotes = async (dispatch: AppDispatch, _id:string) => {
     
     });
   
-    if(!response.ok) throw new Error ("failed to dlete Note")
+    if(!response.ok) throw new Error ("failed to delete Note")
     dispatch(deleteNote(_id));
   } catch (error) {
-    console.error("Error occured while trying to delete",error);
+    console.error("Error occured while trying to delete:",error);
   }
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
-import { selectNote } from '../features/notes/notesSlice';
+import { Note, selectNote } from '../features/notes/notesSlice';
 import { addNotes, updateNotes } from '../Api';
 
  export const NoteForm: React.FC = () => {
@@ -23,8 +23,12 @@ import { addNotes, updateNotes } from '../Api';
 
   const handleAddNote =async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData:Omit<Note,'_id'>={
+      title:title,
+      content:content
+    }
     try{
-      await addNotes(dispatch,{title,content})
+      await addNotes(dispatch,formData)
       setTitle('');
       setContent('');
     } catch (error) {
