@@ -31,9 +31,13 @@ export const Home = () => {
                     password: formData.password,
                 });
                 // Use the response for storing the token
-                console.log(
-                    localStorage.setItem("accessToken", response.data.accessToken)
-                );
+                const accessToken=response.data.accessToken
+                if(accessToken){
+                    console.log(
+                        localStorage.setItem("accessToken",accessToken )
+                    );
+                }
+               
                 alert("Log in successful");
                 navigate("/app");
             } else {

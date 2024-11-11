@@ -16,12 +16,25 @@ interface ApiResponse {
 // }
 
 const fetchNotes = async (dispatch: AppDispatch) => {
-  const response = await fetch("http://localhost:5000/all-notes");
-  const data: ApiResponse = await response.json();
-  if (data.notes) {
-    dispatch(getNotes(data.notes));
-  } else {
-    console.error("Notes  not found in the  response");
+  const userToken=localStorage.getItem("accessToken")
+  try {
+    const response = await fetch("http://localhost:5000/all-notes",{
+      headers:{
+        'Authorization':`Bearer ${userToken}`
+      }
+    });
+    if(!response.ok){
+      throw new Error("failed to fetch the notes")
+    }
+    const data: ApiResponse = await response.json();
+    if (data.notes && data.notes.length >0) {
+      dispatch(getNotes(data.notes));
+    } else {
+      console.error("No Notes  found in the  response");
+      dispatch(getNotes([]))
+    }
+  } catch (error) {
+    console.error("Error fetching notes:",error)
   }
 };
 const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
@@ -29,21 +42,27 @@ const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
   //     title:formData.title,
   //     conten:formData.content,
   //   };
+  const userToken=localStorage.getItem("accessToken")
   try {
     const response = await fetch("http://localhost:5000/add-note", {
       method: "POST",
       headers: {
+        'Authorization':`Bearer ${userToken}`,
         "Content-Type": "application/json",
+        
       },
       body: JSON.stringify(formData),
     });
+    if(!response.ok){
+      throw new Error("Failed to add new notes")
+    }
     const data: ApiResponse = await response.json();
     console.log(data);
 
     const savedNote = data.notes[0];
     dispatch(addNote(savedNote));
   } catch (error) {
-    throw new Error("error");
+    console.error("Error while trying to add new notes",error);
   }
 };
 const updateNotes=async(dispatch:AppDispatch,formData:Note)=>{
