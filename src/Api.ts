@@ -34,7 +34,7 @@ const fetchNotes = async (dispatch: AppDispatch) => {
       dispatch(getNotes([]))
     }
   } catch (error) {
-    console.error("Error fetching notes:",error)
+    console.error("fetchNotes Error:",error)
   }
 };
 const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
