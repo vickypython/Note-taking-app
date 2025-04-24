@@ -6,7 +6,7 @@ import {
   Note,
   } from "./features/notes/notesSlice";
 import { AppDispatch } from "./store";
-const BaseUrl:string="http://localhost:5000"
+const BaseUrl:string=import.meta.env.VITE_API_BASE_URL
 interface ApiResponse {
   message: string; //"{Body:'message',stkcallback:'{vvaj}'"
   notes: Note[];
