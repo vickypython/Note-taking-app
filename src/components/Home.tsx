@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+const BaseUrl:string=import.meta.env.VITE_API_BASE_URL
 export const Home = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ export const Home = () => {
         try {
             if (isLogin) {
                 // We need the response for login
-                const response = await axios.post("http://localhost:5000/login", {
+                const response = await axios.post(`${BaseUrl}/login`, {
                     email: formData.email,
                     password: formData.password,
                 });
@@ -41,9 +41,10 @@ export const Home = () => {
                     // console.log("AccessToken:", browserAccessToken) 
                 }
                 alert("Log in successful");
+                
                 navigate("/app");
             } else {
-                await axios.post("http://localhost:5000/register", {
+                await axios.post(`${BaseUrl}/register`, {
                     fullName: formData.fullName,
                     email: formData.email,
                     password: formData.password,
