@@ -21,6 +21,9 @@ const notesSlice = createSlice({
   name: "notes",
   initialState,
   reducers: {
+    getNotes: (state, action: PayloadAction<Note[]>) => {
+      state.notes = action.payload;
+    },
     addNote: (state, action: PayloadAction<Note>) => {
       state.notes = [...state.notes, action.payload];
     },
@@ -30,12 +33,8 @@ const notesSlice = createSlice({
         note._id === payload._id ? payload : note
       );
     },
-    getNotes: (state, action: PayloadAction<Note[]>) => {
-      state.notes = action.payload;
-    },
     deleteNote: (state, action: PayloadAction<string>) => {
-     
-      state.notes = state.notes.filter((note) => note._id !== action.payload);
+     state.notes = state.notes.filter((note) => note._id !== action.payload);
     },
     selectNote: (state, action: PayloadAction<Note | null>) => {
       state.selectedNote = action.payload;

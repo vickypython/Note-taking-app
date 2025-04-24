@@ -9,7 +9,7 @@ import { addNotes, updateNotes } from '../Api';
   const selectedNote = useSelector((state: RootState) => state.notes.selectedNote);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
+//this section will run immediately the application mounts
   useEffect(() => {
     if (selectedNote) {
       setTitle(selectedNote.title);
@@ -60,6 +60,7 @@ import { addNotes, updateNotes } from '../Api';
       <input type="text" value={title} onChange={e => setTitle(e.target.value)} placeholder='Title' required />
       <textarea rows={10} value={content} onChange={e => setContent(e.target.value)} placeholder='Content' required />
       {selectedNote ? (
+        //some style need to be added here
         <div>
           <button type="submit">Update</button>
           <button type="button" onClick={handleCancel}>Cancel</button>

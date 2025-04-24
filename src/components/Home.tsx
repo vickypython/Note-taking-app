@@ -10,8 +10,6 @@ export const Home = () => {
         fullName: "",
         role: "",
     });
-
-
     const navigate = useNavigate();
     const handleSwitchToLogin = () => setIsLogin(true);
     const handleSwitchToRegister = () => setIsLogin(false);
@@ -20,7 +18,9 @@ export const Home = () => {
         const { name, value } = e.target as HTMLInputElement;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
-
+    const handleRedirect = () => {
+        navigate("/app")
+    }
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -36,12 +36,10 @@ export const Home = () => {
                 console.log('here is the accessToken:', accessToken);
 
                 if (accessToken) {
-
-                    console.log(localStorage.setItem("accessToken", accessToken));
+                console.log(localStorage.setItem("accessToken", accessToken));
                     // const browserAccessToken = localStorage.getItem("accessToken")
                     // console.log("AccessToken:", browserAccessToken) 
                 }
-
                 alert("Log in successful");
                 navigate("/app");
             } else {
@@ -61,8 +59,8 @@ export const Home = () => {
     };
 
     return (
-        <div className="bg-pink-500 flex justify-center items-center min-h-screen">
-            <div className="border border-emerald-300 w-72 mb-3 p-4">
+        <div className="bg-gray-100 flex justify-center items-center min-h-screen">
+            <div className="border border-transparent-300 shadow-md w-72 mb-3 p-4">
                 <div className="text-center mb-4">
                     <h3 className="text-center text-2xl capitalize text-yellow-500">
                         Welcome to Note Taking App
@@ -70,10 +68,8 @@ export const Home = () => {
                 </div>
 
                 {isLogin ? (
+                    //login container start here
                     <div className="form-container">
-                        <h3 className="text-center text-2xl capitalize text-yellow-500 mb-4">
-                            Log In
-                        </h3>
                         <form
                             onSubmit={handleSubmit}
                             className="flex flex-col gap-2 justify-center items-center"
@@ -90,6 +86,7 @@ export const Home = () => {
                                     className="border text-black w-52 hover:border-slate-800"
                                     value={formData.email}
                                     onChange={handleChange}
+
                                 />
                             </div>
                             <div className="flex flex-col">
@@ -104,19 +101,21 @@ export const Home = () => {
                                     className=" text-black border w-52 hover:border-slate-800"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    minLength={8}
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="bg-purple-500 text-center text-white rounded-sm shadow-sm p-2 w-36 mb-2"
+                                className="bg-blue-500 text-center text-white rounded-sm shadow-sm p-2 w-36 mb-2"
                             >
                                 Login
                             </button>
                             <p className="text-gray-600 mt-2">
                                 Forgot your password?{" "}
                                 <button
-                                    onClick={() =>
-                                        alert("Redirect to password reset page or modal.")
+                                    onClick={
+                                        // alert("Redirect to password reset page or modal.")
+                                        handleRedirect
                                     }
                                     className="text-blue-500 hover:underline"
                                 >
@@ -135,14 +134,11 @@ export const Home = () => {
                         </form>
                     </div>
                 ) : (
+                    //Register container 
                     <div className="form-container">
-                        <h3 className="text-center text-2xl capitalize text-yellow-500 mb-4">
-                            Register
-                        </h3>
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col gap-2 justify-center items-center"
-                        >
+                            className="flex flex-col gap-2 justify-center items-center">
                             <div className="flex flex-col">
                                 <label htmlFor="fName" className="text-xl font-semibold">
                                     Full Name:
@@ -166,6 +162,8 @@ export const Home = () => {
                                     name="email"
                                     id="email"
                                     required
+                                    // defaultValue="test@gmail.com"
+                                    pattern="/^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/"
                                     className=" text-black border w-52 hover:border-slate-800"
                                     value={formData.email}
                                     onChange={handleChange}
@@ -197,14 +195,13 @@ export const Home = () => {
                                     className=" text-black border w-52 hover:border-slate-800"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    minLength={8}
                                 />
                             </div>
                             <button
                                 type="submit"
-                                className="bg-purple-500  text-center text-white rounded-sm shadow-sm p-2 w-36 mb-2"
-                            >
-                                Register
-                            </button>
+                                className="bg-blue-500  text-center text-white rounded-sm shadow-sm p-2 w-36 mb-2"
+                            > Register</button>
                             <p className="text-gray-600 mt-2">
                                 Already have an account?{" "}
                                 <button

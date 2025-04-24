@@ -1,13 +1,10 @@
 import React, { useEffect } from "react"
 import { NoteList } from "./components/Notes"
 import { NoteForm } from "./components/NotesForm"
-
 import './App.css'
-
 import { Provider, useDispatch } from "react-redux"
 import { store } from "./store"
 import { fetchNotes } from "./Api"
-
 const AppContent: React.FC = () => {
   const dispatch = useDispatch()
   useEffect(() => {
@@ -18,8 +15,7 @@ const AppContent: React.FC = () => {
       <NoteForm />
       <NoteList />
     </div>
-
-  )
+)
 }
 export const App = () => {
   return (

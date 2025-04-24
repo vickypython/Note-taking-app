@@ -1,13 +1,14 @@
 import {
-  addNote,
-  deleteNote,
   getNotes,
-  Note,
+  addNote,
   updateNote,
-} from "./features/notes/notesSlice";
+  deleteNote,
+  Note,
+  } from "./features/notes/notesSlice";
 import { AppDispatch } from "./store";
+const BaseUrl:string="http://localhost:5000"
 interface ApiResponse {
-  message: string; //"{Body:'mesage',stkcallback:'{vvaj}'"
+  message: string; //"{Body:'message',stkcallback:'{vvaj}'"
   notes: Note[];
 }
 // interface NoteInput {
@@ -18,7 +19,7 @@ interface ApiResponse {
 const fetchNotes = async (dispatch: AppDispatch) => {
   const userToken = localStorage.getItem("accessToken");
   try {
-    const response = await fetch("http://localhost:5000/all-notes", {
+    const response = await fetch(`${BaseUrl}/all-notes`, {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
@@ -44,7 +45,7 @@ const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
   //   };
   const userToken = localStorage.getItem("accessToken");
   try {
-    const response = await fetch("http://localhost:5000/add-note", {
+    const response = await fetch(`${BaseUrl}/add-note`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userToken}`,
@@ -67,9 +68,9 @@ const addNotes = async (dispatch: AppDispatch, formData: Omit<Note, "_id">) => {
 const updateNotes = async (dispatch: AppDispatch, formData: Note) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/update-note/${formData._id}`,
+      `${BaseUrl}/update-note/${formData._id}`,
       {
-        method: "Put",
+        method: "PUT",
         headers: {
           "Content-Type": "Application/json",
         },
@@ -89,7 +90,7 @@ const updateNotes = async (dispatch: AppDispatch, formData: Note) => {
 };
 const deleteNotes = async (dispatch: AppDispatch, _id: string) => {
   try {
-    const response = await fetch(`http://localhost:5000/delete-note/${_id}`, {
+    const response = await fetch(`${BaseUrl}/delete-note/${_id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "Application/json",
@@ -100,7 +101,6 @@ const deleteNotes = async (dispatch: AppDispatch, _id: string) => {
     dispatch(deleteNote(_id));
   } catch (error) {
     console.error("Error occured while trying to delete:", error);
-  }
+  }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 };
-
 export { fetchNotes, addNotes, updateNotes, deleteNotes };
