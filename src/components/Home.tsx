@@ -129,7 +129,7 @@ export const Home = () => {
                                     onClick={handleSwitchToRegister}
                                     className="text-blue-500 hover:underline"
                                 >
-                                    Sign up
+                                    Sign Up
                                 </button>
                             </p>
                         </form>
